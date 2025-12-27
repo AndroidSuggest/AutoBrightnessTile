@@ -75,10 +75,10 @@ jobs:
           #           Note: Path preserve! If a file from "com/ownsony/adaptivebrightnesstile" is compiled and the -d is "build" the file will be in build/com/ownsony/adaptivebrightnesstile/*.class
           #           -d: Can be a .jar file or folder
           # kotlinc -d build/classes.jar app/src/main/java/com/ownsony/adaptivebrightnesstile/*.kt build/res/com/ownsony/adaptivebrightnesstile/R.java -cp $ANDROID_HOME/platforms/android-36/android.jar # app/src/main/java/com/ownsony/adaptivebrightnesstile/*.java
-          kotlinc -d build app/src/main/java/com/xcodeapps/autobrightnesstile/*.kt build/res/com/xcodeapps/autobrightnesstile/R.java -cp $ANDROID_HOME/platforms/android-34/android.jar
+          kotlinc -d build/classes.jar app/src/main/java/com/xcodeapps/autobrightnesstile/*.kt build/res/com/xcodeapps/autobrightnesstile/R.java -cp $ANDROID_HOME/platforms/android-34/android.jar
 
           # Step 5.4: Compile Java code(.class/.jar) (d8 tool) to a single classes.dex file (When a path is given a single class.dex file will be created, otherwise it can contain .zip or .jar and will pack the single created classes.dex into the .zip or .jar)
-          d8 build/com/xcodeapps/autobrightnesstile/*.class --lib $ANDROID_HOME/platforms/android-34/android.jar --output build
+          d8 build/classes.jar --lib $ANDROID_HOME/platforms/android-34/android.jar --output build
 
           # Step 5.5: Add classes.dex into resources.ap_ (aapt)
           cd build
