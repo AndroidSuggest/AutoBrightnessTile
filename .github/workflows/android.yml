@@ -68,7 +68,7 @@ jobs:
           #           This also "compiles" the "AndroidManifest.xml" into the file
           #           --java build/res: Creates the "R.java" inside "build/res/package_name"
           #           --output-to-dir: With this parameter, when -o is not a file and a directory instead, it would write the files there, which would have been otherwise in the file
-          aapt2 link -o build/res/resources.ap_ -I $ANDROID_HOME/platforms/android-34/android.jar --manifest app/src/main/AndroidManifest.xml --java build/res build/res/*
+          aapt2 link --min-sdk-version 34 --target-sdk-version 34 -o build/res/resources.ap_ -I $ANDROID_HOME/platforms/android-34/android.jar --manifest app/src/main/AndroidManifest.xml --java build/res build/res/*
 
           # Step 5.3: Compile code with kotlinc (-d build/classes creates .class file for each .kt/.java file in build/classes, -d build/classes.jar creates a classes.jar that contains all .class files, -cp = -classpath)
           #           It is mandatory to pass the R.java!
