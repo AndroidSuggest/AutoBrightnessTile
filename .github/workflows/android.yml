@@ -42,14 +42,14 @@ jobs:
           unzip commandlinetools.zip -d $HOME/android-sdk
           rm commandlinetools.zip
           yes | $HOME/android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/android-sdk --update
-          yes | $HOME/android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/android-sdk "platform-tools" "build-tools;36.0.0" "platforms;android-36"
+          yes | $HOME/android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/android-sdk "platform-tools" "build-tools;34.0.0" "platforms;android-34"
 
       # Step 5: Build the APK (Release Mode)
       - name: Build Release APK using Android SDK tools
         run: |
           # Set environment variables
           export ANDROID_HOME=$HOME/android-sdk
-          export PATH=$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/36.0.0:$PATH
+          export PATH=$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/34.0.0:$PATH
 
           # Create the output directory if it does not exist
           mkdir -p build/res
@@ -68,17 +68,17 @@ jobs:
           #           This also "compiles" the "AndroidManifest.xml" into the file
           #           --java build/res: Creates the "R.java" inside "build/res/package_name"
           #           --output-to-dir: With this parameter, when -o is not a file and a directory instead, it would write the files there, which would have been otherwise in the file
-          aapt2 link -o build/res/resources.ap_ -I $ANDROID_HOME/platforms/android-36/android.jar --manifest app/src/main/AndroidManifest.xml --java build/res build/res/*
+          aapt2 link -o build/res/resources.ap_ -I $ANDROID_HOME/platforms/android-34/android.jar --manifest app/src/main/AndroidManifest.xml --java build/res build/res/*
 
           # Step 5.3: Compile code with kotlinc (-d build/classes creates .class file for each .kt/.java file in build/classes, -d build/classes.jar creates a classes.jar that contains all .class files, -cp = -classpath)
           #           It is mandatory to pass the R.java!
           #           Note: Path preserve! If a file from "com/ownsony/adaptivebrightnesstile" is compiled and the -d is "build" the file will be in build/com/ownsony/adaptivebrightnesstile/*.class
           #           -d: Can be a .jar file or folder
           # kotlinc -d build/classes.jar app/src/main/java/com/ownsony/adaptivebrightnesstile/*.kt build/res/com/ownsony/adaptivebrightnesstile/R.java -cp $ANDROID_HOME/platforms/android-36/android.jar # app/src/main/java/com/ownsony/adaptivebrightnesstile/*.java
-          kotlinc -d build app/src/main/java/com/xcodeapps/autobrightnesstile/*.kt build/res/com/xcodeapps/autobrightnesstile/R.java -cp $ANDROID_HOME/platforms/android-36/android.jar
+          kotlinc -d build app/src/main/java/com/xcodeapps/autobrightnesstile/*.kt build/res/com/xcodeapps/autobrightnesstile/R.java -cp $ANDROID_HOME/platforms/android-34/android.jar
 
           # Step 5.4: Compile Java code(.class/.jar) (d8 tool) to a single classes.dex file (When a path is given a single class.dex file will be created, otherwise it can contain .zip or .jar and will pack the single created classes.dex into the .zip or .jar)
-          d8 build/com/xcodeapps/autobrightnesstile/*.class --lib $ANDROID_HOME/platforms/android-36/android.jar --output build
+          d8 build/com/xcodeapps/autobrightnesstile/*.class --lib $ANDROID_HOME/platforms/android-34/android.jar --output build
 
           # Step 5.5: Add classes.dex into resources.ap_ (aapt)
           cd build
